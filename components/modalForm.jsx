@@ -8,9 +8,22 @@ import {
   TextInput,
 } from "react-native";
 
-export function ModalForm({ modalVisible, setModalVisible }) {
+export function ModalForm({ modalVisible, setModalVisible, data, setData }) {
   const [typeBill, onChangeText] = useState("");
   const [amoutMoney, onChangeNumber] = useState("");
+
+  const addNewRecord = () => {
+    setModalVisible(!modalVisible);
+    setData([
+      ...data,
+      {
+        typeRecord: true,
+        value: amoutMoney,
+        name: typeBill,
+      },
+    ]);
+  };
+
   return (
     <Modal visible={modalVisible}>
       <View style={styles.modal}>
@@ -29,10 +42,7 @@ export function ModalForm({ modalVisible, setModalVisible }) {
             keyboardType="number-pad"
           />
           <View style={styles.botons}>
-            <Pressable
-              style={styles.boton}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
+            <Pressable style={styles.boton} onPress={addNewRecord}>
               <Text style={{ color: "white" }}>Guardar registro</Text>
             </Pressable>
             <Pressable
