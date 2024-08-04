@@ -8,24 +8,41 @@ import {
   TextInput,
 } from "react-native";
 
+import { CheckBox } from "./checkbox";
+
 export function ModalForm({ modalVisible, setModalVisible, data, setData }) {
   const [typeBill, onChangeText] = useState("");
   const [amoutMoney, onChangeNumber] = useState("");
+  const [inputOutput, setinputOutput] = useState("Gasto");
 
   const addNewRecord = () => {
+    onChangeNumber("");
+    onChangeText("");
     setModalVisible(!modalVisible);
+    setinputOutput("Gasto");
     setData([
       ...data,
       {
-        typeRecord: true,
+        typeRecord: inputOutput === "Gasto" ? false : true,
         value: amoutMoney,
         name: typeBill,
       },
     ]);
   };
 
+  const closeModal = () => {
+    onChangeNumber("");
+    onChangeText("");
+    setModalVisible(!modalVisible);
+    setinputOutput("Gasto");
+  };
+
   return (
-    <Modal visible={modalVisible}>
+    <Modal
+      visible={modalVisible}
+      style={{ width: 500, height: 500 }}
+      transparent
+    >
       <View style={styles.modal}>
         <View style={styles.modalView}>
           <Text>Tipo de gasto</Text>
@@ -41,14 +58,30 @@ export function ModalForm({ modalVisible, setModalVisible, data, setData }) {
             value={amoutMoney}
             keyboardType="number-pad"
           />
+          <View
+            style={{
+              flexDirection: "row",
+              paddingTop: 10,
+              paddingBottom: 10,
+              gap: 10,
+            }}
+          >
+            <CheckBox
+              name="Ingreso"
+              selected={inputOutput}
+              setSelected={setinputOutput}
+            />
+            <CheckBox
+              name="Gasto"
+              selected={inputOutput}
+              setSelected={setinputOutput}
+            />
+          </View>
           <View style={styles.botons}>
             <Pressable style={styles.boton} onPress={addNewRecord}>
               <Text style={{ color: "white" }}>Guardar registro</Text>
             </Pressable>
-            <Pressable
-              style={styles.boton}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
+            <Pressable style={styles.boton} onPress={closeModal}>
               <Text style={{ color: "white" }}>Cerrar</Text>
             </Pressable>
           </View>
@@ -68,12 +101,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#00000054",
   },
   modalView: {
     padding: 50,
     borderWidth: 5,
     borderColor: "black",
     borderRadius: 20,
+    backgroundColor: "#ffffff",
   },
   inputText: {
     borderWidth: 5,
