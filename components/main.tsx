@@ -14,13 +14,11 @@ export function Main() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
-      console.log("data completa: ", data);
+      console.log("data completa: ", JSON.stringify(data, null, 2));
       if (data !== null) {
-        console.log("Transacciones: ", data.transactions);
         setRecords(data.transactions);
       }
     };
-    console.log("Records", records);
     fetchData();
   }, []);
 
