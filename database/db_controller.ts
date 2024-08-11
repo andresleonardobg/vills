@@ -25,6 +25,7 @@ export const storeTransaction = async (newTransaction: object) => {
 export const removeData = async () => {
   try {
     await AsyncStorage.removeItem("vills");
+    await AsyncStorage.removeItem("currentId");
   } catch (e) {
     console.log(e);
   }
