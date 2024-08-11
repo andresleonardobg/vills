@@ -5,17 +5,18 @@ import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import { getData, removeData } from "../database/db_controller";
+import { Transaction } from "../types/types";
 
 export function Main() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
       console.log("data completa: ", data);
-      console.log("Transacciones: ", data.transactions);
       if (data !== null) {
+        console.log("Transacciones: ", data.transactions);
         setRecords(data.transactions);
       }
     };

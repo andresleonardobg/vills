@@ -8,29 +8,11 @@ import {
   TextInput,
 } from "react-native";
 import { CheckBox } from "./checkbox";
-import { storeTransaction } from "../database/db_controller";
+import { storeTransaction, generateId } from "../database/db_controller";
 import { CurrentDate } from "../tools/villsFunctions";
+import { Transaction, propsTransaction } from "../types/types";
 
-type Transaction = {
-  id: number;
-  type: boolean;
-  amount: number;
-  category: string;
-  year: number;
-  month: string;
-  day: number;
-  hour: (number|string)[];
-  description: string;
-};
-
-type Props = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  transactions: [];
-  setData: React.Dispatch<React.SetStateAction<{}[]>>;
-};
-
-export function ModalForm(props: Props) {
+export function ModalForm(props: propsTransaction) {
   const [typeBill, onChangeText] = useState("");
   const [amoutMoney, onChangeNumber] = useState("");
   const [inputOutput, setinputOutput] = useState("Gasto");
@@ -38,9 +20,8 @@ export function ModalForm(props: Props) {
   const currentDate = new CurrentDate();
 
   const addNewTransaction = () => {
-    console.log("transacciones modal form: ", props.transactions);
     const newTransaction: Transaction = {
-      id: props.transactions ? props.transactions.length + 1 : 1,
+      id: generateId(),
       type: inputOutput === "Ingreso" ? true : false,
       amount: parseInt(amoutMoney),
       category: typeBill,
