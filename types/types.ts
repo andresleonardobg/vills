@@ -1,5 +1,5 @@
 export type Transaction = {
-  id: Promise<number>;
+  id: number;
   type: boolean;
   amount: number;
   category: string;
