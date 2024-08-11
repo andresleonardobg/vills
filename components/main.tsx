@@ -8,7 +8,7 @@ import { getData, removeData } from "../database/db_controller";
 
 export function Main() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [records, setRecords] = useState([{}]);
+  const [records, setRecords] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,14 +29,14 @@ export function Main() {
         <ModalForm
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          data={records}
+          transactions={records}
           setData={setRecords}
         />
         <FlatList
           style={{ gap: 10 }}
           data={records}
           // keyExtractor={}
-          renderItem={({ item }) => <Card input={item} />}
+          renderItem={({ item }) => <Card data={item} />}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         />
       </View>
