@@ -21,13 +21,15 @@ export function ModalForm(props: propsTransaction) {
   const [id, setId] = useState<number>(0);
 
   useEffect(() => {
-    setNewId(false);
-    const fetchId = async () => {
-      const generatedId = await generateId();
-      setId(generatedId);
-    };
-
-    fetchId();
+    if (newId) {
+      setNewId(false);
+      const fetchId = async () => {
+        const generatedId = await generateId();
+        setId(generatedId);
+      };
+      console.log("nuevo id generado");
+      fetchId();
+    }
   }, [newId]);
 
   const currentDate = new CurrentDate();
