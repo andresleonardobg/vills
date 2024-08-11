@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   Modal,
@@ -16,12 +16,26 @@ export function ModalForm(props: propsTransaction) {
   const [typeBill, onChangeText] = useState("");
   const [amoutMoney, onChangeNumber] = useState("");
   const [inputOutput, setinputOutput] = useState("Gasto");
+  const [newId, setNewId] = useState(false);
+
+  const [id, setId] = useState<number>(0);
+
+  useEffect(() => {
+    setNewId(false);
+    const fetchId = async () => {
+      const generatedId = await generateId();
+      setId(generatedId);
+    };
+
+    fetchId();
+  }, [newId]);
 
   const currentDate = new CurrentDate();
 
   const addNewTransaction = () => {
+    setNewId(true);
     const newTransaction: Transaction = {
-      id: generateId(),
+      id: id,
       type: inputOutput === "Ingreso" ? true : false,
       amount: parseInt(amoutMoney),
       category: typeBill,
