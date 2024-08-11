@@ -19,15 +19,15 @@ type Transaction = {
   year: number;
   month: string;
   day: number;
-  hour: number[];
+  hour: (number|string)[];
   description: string;
 };
 
 type Props = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  transactions: Transaction[];
-  setData: React.Dispatch<React.SetStateAction<Transaction[]>>;
+  transactions: [];
+  setData: React.Dispatch<React.SetStateAction<{}[]>>;
 };
 
 export function ModalForm(props: Props) {
@@ -38,11 +38,11 @@ export function ModalForm(props: Props) {
   const currentDate = new CurrentDate();
 
   const addNewTransaction = () => {
-    console.log(transactions);
+    console.log("transacciones modal form: ", props.transactions);
     const newTransaction: Transaction = {
-      id: transactions.length + 1,
+      id: props.transactions ? props.transactions.length + 1 : 1,
       type: inputOutput === "Ingreso" ? true : false,
-      amount: amoutMoney,
+      amount: parseInt(amoutMoney),
       category: typeBill,
       year: currentDate.year(),
       month: currentDate.month(),
@@ -51,13 +51,13 @@ export function ModalForm(props: Props) {
       description: "Ejempo",
     };
     storeTransaction(newTransaction);
-    setData([...transactions, newTransaction]);
+    props.setData([...props.transactions, newTransaction]);
   };
 
   const addNewRecord = () => {
     onChangeNumber("");
     onChangeText("");
-    setModalVisible(!modalVisible);
+    props.setModalVisible(!props.modalVisible);
     setinputOutput("Gasto");
     addNewTransaction();
   };
@@ -65,13 +65,13 @@ export function ModalForm(props: Props) {
   const closeModal = () => {
     onChangeNumber("");
     onChangeText("");
-    setModalVisible(!modalVisible);
+    props.setModalVisible(!props.modalVisible);
     setinputOutput("Gasto");
   };
 
   return (
     <Modal
-      visible={modalVisible}
+      visible={props.modalVisible}
       style={{ width: 500, height: 500 }}
       transparent
     >
