@@ -9,7 +9,7 @@ export const getData = async () => {
   }
 };
 
-export const storeTransaction = async (newTransaction) => {
+export const storeTransaction = async (newTransaction: object) => {
   try {
     const jsonValue = await AsyncStorage.getItem("vills");
     let transactions =
@@ -28,6 +28,13 @@ export const removeData = async () => {
   } catch (e) {
     console.log(e);
   }
-
   console.log("Done.");
 };
+
+export async function generateId(): Promise<number> {
+  let strCurrentId: string | null = await AsyncStorage.getItem("currentId");
+  let currentId: number = strCurrentId ? parseInt(strCurrentId, 10) : 0;
+  currentId++;
+  await AsyncStorage.setItem("currentId", currentId.toString());
+  return currentId;
+}
