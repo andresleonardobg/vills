@@ -39,6 +39,13 @@ export function Main() {
     ]);
   };
 
+  const deleteRecord = (id: number) => {
+    const index = records.findIndex((item) => item.id === id);
+    const oldRecords = [...records];
+    oldRecords.splice(index);
+    setRecords(oldRecords);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -52,7 +59,7 @@ export function Main() {
           style={{ gap: 10 }}
           data={records}
           // keyExtractor={}
-          renderItem={({ item }) => <Card data={item} />}
+          renderItem={({ item }) => <Card data={item} delete={deleteRecord} />}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         />
       </View>
