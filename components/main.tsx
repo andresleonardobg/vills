@@ -32,6 +32,10 @@ export function Main() {
           removeData();
         },
       },
+      {
+        text: "Cancelar",
+        onPress: () => console.log("dismissing alert"),
+      },
     ]);
   };
 
