@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, View, Alert } from "react-native";
 import { ModalForm } from "./modalForm";
 import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Constants from "expo-constants";
 import { getData, removeData } from "../database/db_controller";
 import { Transaction } from "../types/types";
@@ -21,6 +22,18 @@ export function Main() {
     };
     fetchData();
   }, []);
+
+  const showAlert = () => {
+    Alert.alert("Info", "¿Borrar todas las bases de datos?", [
+      {
+        text: "ok",
+        onPress: () => {
+          setRecords([]);
+          removeData();
+        },
+      },
+    ]);
+  };
 
   return (
     <>
@@ -46,6 +59,10 @@ export function Main() {
       >
         <Ionicons name="add-circle" size={32} color="white" />
       </Pressable>
+
+      <Pressable onPress={showAlert} style={styles.botonDelete}>
+        <MaterialIcons name="delete" size={24} color="#ffffff" />
+      </Pressable>
     </>
   );
 }
@@ -58,6 +75,18 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   boton: {
+    backgroundColor: "#000",
+    borderRadius: 6,
+    padding: 10,
+    position: "absolute",
+    width: 60,
+    height: 60,
+    bottom: 150,
+    right: 60,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  botonDelete: {
     backgroundColor: "#000",
     borderRadius: 6,
     padding: 10,
