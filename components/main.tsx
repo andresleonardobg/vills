@@ -5,7 +5,7 @@ import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Constants from "expo-constants";
-import { getData, removeData } from "../database/db_controller";
+import { getData, removeData, storeTransactions } from "../database/db_controller";
 import { Transaction } from "../types/types";
 
 export function Main() {
@@ -44,7 +44,12 @@ export function Main() {
     const oldRecords = [...records];
     oldRecords.splice(index, 1);
     setRecords(oldRecords);
+    storeTransactions(oldRecords);
   };
+
+  const editRecord = (id: number) => {
+
+  }
 
   return (
     <>
