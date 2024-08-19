@@ -42,7 +42,7 @@ export function Main() {
   const deleteRecord = (id: number) => {
     const index = records.findIndex((item) => item.id === id);
     const oldRecords = [...records];
-    oldRecords.splice(index);
+    oldRecords.splice(index, 1);
     setRecords(oldRecords);
   };
 
