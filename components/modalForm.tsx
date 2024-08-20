@@ -8,21 +8,34 @@ import {
   TextInput,
 } from "react-native";
 import { CheckBox } from "./checkbox";
-import { storeTransaction, generateId } from "../database/db_controller";
+import { storeTransaction, generateId, storeTransactions } from "../database/db_controller";
 import { CurrentDate } from "../tools/villsFunctions";
-import { Transaction, propsTransaction } from "../types/types";
+import { Transaction, NewDataTransaction } from "../types/types";
+
+type TrasactionToUpdate = {
+  id: number;
+  transaction: Transaction;
+}
+
+export type propsTransaction = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  transactions: Transaction[];
+  setData: React.Dispatch<React.SetStateAction<Transaction[]>>;
+  infoTransactionToUpdate : null | TrasactionToUpdate
+};
 
 export function ModalForm(props: propsTransaction) {
-  const [typeBill, onChangeText] = useState("");
-  const [amoutMoney, onChangeNumber] = useState("");
-  const [inputOutput, setinputOutput] = useState("Gasto");
-  const [newId, setNewId] = useState(false);
+  const [category, setCategory] = useState("");
+  const [amoutMoney, setAmoutMoney] = useState("");
+  const [type, setType] = useState("Gasto");
+  const [getId, setGetId] = useState(false);
+  const [id, setId] = useState(0);
 
-  const [id, setId] = useState<number>(0);
-
+  // get id
   useEffect(() => {
-    if (newId) {
-      setNewId(false);
+    if (getId) {
+      setGetId(false);
       const fetchId = async () => {
         const generatedId = await generateId();
         setId(generatedId);
@@ -30,40 +43,76 @@ export function ModalForm(props: propsTransaction) {
       console.log("nuevo id generado");
       fetchId();
     }
-  }, [newId]);
+  }, [getId]);
 
-  const currentDate = new CurrentDate();
+  //set initial values of the inputs
+  useEffect(()=>{
+    if(props.infoTransactionToUpdate){
+      setCategory(props.infoTransactionToUpdate.transaction.category);
+      setAmoutMoney(props.infoTransactionToUpdate.transaction.amount.toString());
+    }
+  },[props.infoTransactionToUpdate])
 
-  const addNewTransaction = () => {
-    setNewId(true);
+  const saveNewTransaction = () => {
+    const currentDate = new CurrentDate();
+
+    setGetId(true);
+
     const newTransaction: Transaction = {
       id: id,
-      type: inputOutput === "Ingreso" ? true : false,
+      type: type === "Ingreso" ? true : false,
       amount: parseInt(amoutMoney),
-      category: typeBill,
+      category: category,
       year: currentDate.year(),
       month: currentDate.month(),
       day: currentDate.day(),
       hour: [currentDate.hour(), currentDate.minutes(), currentDate.seconds()],
       description: "Ejempo",
     };
+
     storeTransaction(newTransaction);
+
     props.setData([...props.transactions, newTransaction]);
   };
 
-  const addNewRecord = () => {
-    onChangeNumber("");
-    onChangeText("");
-    props.setModalVisible(!props.modalVisible);
-    setinputOutput("Gasto");
-    addNewTransaction();
-  };
+  const updateTransaction = () => {
+    let records = [...props.transactions]
+
+    if(props.infoTransactionToUpdate){
+      const oldTransaction = props.infoTransactionToUpdate.transaction
+      const newData: Transaction = {
+        id: props.infoTransactionToUpdate?.id,
+        type: type === "Ingreso" ? true : false,
+        amount: parseInt(amoutMoney),
+        category: category,
+        year: oldTransaction.year,
+        month: oldTransaction.month,
+        day: oldTransaction.day,
+        hour: oldTransaction.hour,
+        description: "Actualizado",
+      }
+      
+      records[props.infoTransactionToUpdate.id] = newData;
+      props.setData(records);
+    }
+    storeTransactions(records)
+    props.setData(records);
+  }
 
   const closeModal = () => {
-    onChangeNumber("");
-    onChangeText("");
+    setAmoutMoney("");
+    setCategory("");
+    setType("Gasto");
     props.setModalVisible(!props.modalVisible);
-    setinputOutput("Gasto");
+  };
+
+  const saveData = () => {
+    if(props.infoTransactionToUpdate){
+      updateTransaction();
+    }else{
+      saveNewTransaction();
+    }
+    closeModal();
   };
 
   return (
@@ -77,13 +126,13 @@ export function ModalForm(props: propsTransaction) {
           <Text>Tipo de gasto</Text>
           <TextInput
             style={styles.inputText}
-            onChangeText={onChangeText}
-            value={typeBill}
+            onChangeText={setCategory}
+            value={category}
           />
           <Text>Cantidad gastada</Text>
           <TextInput
             style={styles.inputText}
-            onChangeText={onChangeNumber}
+            onChangeText={setAmoutMoney}
             value={amoutMoney}
             keyboardType="number-pad"
           />
@@ -97,23 +146,28 @@ export function ModalForm(props: propsTransaction) {
           >
             <CheckBox
               name="Ingreso"
-              selected={inputOutput}
-              setSelected={setinputOutput}
+              selected={type}
+              setSelected={setType}
             />
             <CheckBox
               name="Gasto"
-              selected={inputOutput}
-              setSelected={setinputOutput}
+              selected={type}
+              setSelected={setType}
             />
           </View>
+
           <View style={styles.botons}>
-            <Pressable style={styles.boton} onPress={addNewRecord}>
+
+            <Pressable style={styles.boton} onPress={saveData}>
               <Text style={{ color: "white" }}>Guardar registro</Text>
             </Pressable>
+
             <Pressable style={styles.boton} onPress={closeModal}>
               <Text style={{ color: "white" }}>Cerrar</Text>
             </Pressable>
+
           </View>
+
         </View>
       </View>
     </Modal>

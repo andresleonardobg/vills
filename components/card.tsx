@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Transaction } from "../types/types";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Transaction, NewDataTransaction } from "../types/types";
 
 type propsCard = {
   data: Transaction;
   delete: (id: number) => void;
+  edit: (id: number) => void;
 };
 
 export function Card(props: propsCard) {
@@ -15,14 +17,18 @@ export function Card(props: propsCard) {
           <Text>{props.data.category}</Text>
           <Text>{props.data.amount}</Text>
         </View>
-        <View>
-          {/* //TODO: bug when delete other card all deleted and check the id of
-          objects */}
+        <View style={{flexDirection: "row", gap: 5}}>
           <Pressable
             onPress={() => props.delete(props.data.id)}
             style={styles.boton}
           >
             <MaterialIcons name="delete" size={24} color="#ffffff" />
+          </Pressable>
+          <Pressable
+            onPress={() => props.edit(props.data.id)}
+            style={styles.boton}
+          >
+            <AntDesign name="edit" size={24} color="#fff" />
           </Pressable>
         </View>
       </View>

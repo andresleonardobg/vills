@@ -10,9 +10,9 @@ export type Transaction = {
   description: string;
 };
 
-export type propsTransaction = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  transactions: Transaction[];
-  setData: React.Dispatch<React.SetStateAction<Transaction[]>>;
-};
+export type NewDataTransaction = {
+  type: boolean;
+  amount: number;
+  category: string;
+  description: string;
+}

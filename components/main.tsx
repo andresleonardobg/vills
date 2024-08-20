@@ -6,12 +6,19 @@ import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Constants from "expo-constants";
 import { getData, removeData, storeTransactions } from "../database/db_controller";
-import { Transaction } from "../types/types";
+import { Transaction, NewDataTransaction } from "../types/types";
+
+type TrasactionToUpdate = {
+  id: number;
+  transaction: Transaction;
+}
 
 export function Main() {
   const [modalVisible, setModalVisible] = useState(false);
   const [records, setRecords] = useState<Transaction[]>([]);
+  const [transactionToUpdate, setTransactionToUpdate] = useState<TrasactionToUpdate | null>(null);
 
+  // get data from localstorage
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
@@ -47,8 +54,12 @@ export function Main() {
     storeTransactions(oldRecords);
   };
 
-  const editRecord = (id: number) => {
-
+  const editRecord = (id: number ) => {
+    const index = records.findIndex((item) => item.id === id);
+    const transaction = records[index]
+    const dataToUpdate: TrasactionToUpdate = {id: index, transaction: transaction}
+    setTransactionToUpdate(dataToUpdate);
+    setModalVisible(true);
   }
 
   return (
@@ -59,12 +70,13 @@ export function Main() {
           setModalVisible={setModalVisible}
           transactions={records}
           setData={setRecords}
+          infoTransactionToUpdate={transactionToUpdate}
         />
         <FlatList
           style={{ gap: 10 }}
           data={records}
           // keyExtractor={}
-          renderItem={({ item }) => <Card data={item} delete={deleteRecord} />}
+          renderItem={({ item }) => <Card data={item} delete={deleteRecord} edit={editRecord}/>}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         />
       </View>
