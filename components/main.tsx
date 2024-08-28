@@ -7,6 +7,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Constants from "expo-constants";
 import { getData, removeData, storeTransactions } from "../database/db_controller";
 import { Transaction, NewDataTransaction } from "../types/types";
+import { Totals } from "./Totals";
 
 type TrasactionToUpdate = {
   id: number;
@@ -63,7 +64,8 @@ export function Main() {
   }
 
   return (
-    <>
+    <View style={{width: "100%", height: "100%"}}>
+      <Totals input={100000} output={50000} />
       <View style={styles.container}>
         <ModalForm
           modalVisible={modalVisible}
@@ -73,7 +75,7 @@ export function Main() {
           infoTransactionToUpdate={transactionToUpdate}
         />
         <FlatList
-          style={{ gap: 10 }}
+          style={{ gap: 10, padding: 20 }}
           data={records}
           // keyExtractor={}
           renderItem={({ item }) => <Card data={item} delete={deleteRecord} edit={editRecord}/>}
@@ -82,7 +84,6 @@ export function Main() {
       </View>
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
-        // onPress={() => removeData()}
         style={styles.boton}
       >
         <Ionicons name="add-circle" size={32} color="white" />
@@ -91,7 +92,7 @@ export function Main() {
       <Pressable onPress={showAlert} style={styles.botonDelete}>
         <MaterialIcons name="delete" size={24} color="#ffffff" />
       </Pressable>
-    </>
+    </View>
   );
 }
 
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: "100%",
-    paddingTop: Constants.statusBarHeight,
+    height: "80%",
   },
   boton: {
     backgroundColor: "#000",
