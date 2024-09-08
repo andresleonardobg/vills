@@ -13,13 +13,14 @@ export const getData = async () => {
 export const storeTransactions = async (Transactions: Transaction[]) => {
   try {
     const jsonValue = await AsyncStorage.getItem("vills");
-    let transactions = jsonValue != null ? JSON.parse(jsonValue) : { transactions: [] };
+    let transactions =
+      jsonValue != null ? JSON.parse(jsonValue) : { transactions: [] };
     transactions.transactions = Transactions;
     await AsyncStorage.setItem("vills", JSON.stringify(transactions));
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const storeTransaction = async (newTransaction: Transaction) => {
   try {

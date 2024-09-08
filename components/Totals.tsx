@@ -1,14 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
 
 type Totals = {
-    input: number;
-    output: number;
-}
+  input: number;
+  output: number;
+};
 
 export function Totals(props: Totals) {
-    const balance = () => {
-        return props.input - props.output;
-    }
+  const balance = () => {
+    return props.input - props.output;
+  };
   return (
     <View style={style.base}>
       <View style={style.container}>
@@ -25,7 +25,7 @@ export function Totals(props: Totals) {
         {/* balance */}
         <View style={style.fields}>
           <Text style={style.baseText}>Saldos: </Text>
-          <Text style={style.baseText}>{ balance() }</Text>
+          <Text style={style.baseText}>{balance()}</Text>
         </View>
       </View>
     </View>
@@ -52,5 +52,5 @@ const style = StyleSheet.create({
   baseText: {
     color: "white",
     fontSize: 20,
-  }
+  },
 });

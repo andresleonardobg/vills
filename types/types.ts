@@ -15,4 +15,4 @@ export type NewDataTransaction = {
   amount: number;
   category: string;
   description: string;
-}
+};

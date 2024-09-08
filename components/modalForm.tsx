@@ -8,21 +8,25 @@ import {
   TextInput,
 } from "react-native";
 import { CheckBox } from "./checkbox";
-import { storeTransaction, generateId, storeTransactions } from "../database/db_controller";
+import {
+  storeTransaction,
+  generateId,
+  storeTransactions,
+} from "../database/db_controller";
 import { CurrentDate } from "../tools/villsFunctions";
 import { Transaction, NewDataTransaction } from "../types/types";
 
 type TrasactionToUpdate = {
   id: number;
   transaction: Transaction;
-}
+};
 
 export type propsTransaction = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   transactions: Transaction[];
   setData: React.Dispatch<React.SetStateAction<Transaction[]>>;
-  infoTransactionToUpdate : null | TrasactionToUpdate
+  infoTransactionToUpdate: null | TrasactionToUpdate;
 };
 
 export function ModalForm(props: propsTransaction) {
@@ -46,12 +50,14 @@ export function ModalForm(props: propsTransaction) {
   }, [getId]);
 
   //set initial values of the inputs
-  useEffect(()=>{
-    if(props.infoTransactionToUpdate){
+  useEffect(() => {
+    if (props.infoTransactionToUpdate) {
       setCategory(props.infoTransactionToUpdate.transaction.category);
-      setAmoutMoney(props.infoTransactionToUpdate.transaction.amount.toString());
+      setAmoutMoney(
+        props.infoTransactionToUpdate.transaction.amount.toString()
+      );
     }
-  },[props.infoTransactionToUpdate])
+  }, [props.infoTransactionToUpdate]);
 
   const saveNewTransaction = () => {
     const currentDate = new CurrentDate();
@@ -76,10 +82,10 @@ export function ModalForm(props: propsTransaction) {
   };
 
   const updateTransaction = () => {
-    let records = [...props.transactions]
+    let records = [...props.transactions];
 
-    if(props.infoTransactionToUpdate){
-      const oldTransaction = props.infoTransactionToUpdate.transaction
+    if (props.infoTransactionToUpdate) {
+      const oldTransaction = props.infoTransactionToUpdate.transaction;
       const newData: Transaction = {
         id: props.infoTransactionToUpdate?.id,
         type: type === "Ingreso" ? true : false,
@@ -90,14 +96,14 @@ export function ModalForm(props: propsTransaction) {
         day: oldTransaction.day,
         hour: oldTransaction.hour,
         description: "Actualizado",
-      }
-      
+      };
+
       records[props.infoTransactionToUpdate.id] = newData;
       props.setData(records);
     }
-    storeTransactions(records)
+    storeTransactions(records);
     props.setData(records);
-  }
+  };
 
   const closeModal = () => {
     setAmoutMoney("");
@@ -107,9 +113,9 @@ export function ModalForm(props: propsTransaction) {
   };
 
   const saveData = () => {
-    if(props.infoTransactionToUpdate){
+    if (props.infoTransactionToUpdate) {
       updateTransaction();
-    }else{
+    } else {
       saveNewTransaction();
     }
     closeModal();
@@ -123,13 +129,13 @@ export function ModalForm(props: propsTransaction) {
     >
       <View style={styles.modal}>
         <View style={styles.modalView}>
-          <Text>Tipo de gasto</Text>
+          <Text>Tipo</Text>
           <TextInput
             style={styles.inputText}
             onChangeText={setCategory}
             value={category}
           />
-          <Text>Cantidad gastada</Text>
+          <Text>Cantidad</Text>
           <TextInput
             style={styles.inputText}
             onChangeText={setAmoutMoney}
@@ -144,20 +150,11 @@ export function ModalForm(props: propsTransaction) {
               gap: 10,
             }}
           >
-            <CheckBox
-              name="Ingreso"
-              selected={type}
-              setSelected={setType}
-            />
-            <CheckBox
-              name="Gasto"
-              selected={type}
-              setSelected={setType}
-            />
+            <CheckBox name="Ingreso" selected={type} setSelected={setType} />
+            <CheckBox name="Gasto" selected={type} setSelected={setType} />
           </View>
 
           <View style={styles.botons}>
-
             <Pressable style={styles.boton} onPress={saveData}>
               <Text style={{ color: "white" }}>Guardar registro</Text>
             </Pressable>
@@ -165,9 +162,7 @@ export function ModalForm(props: propsTransaction) {
             <Pressable style={styles.boton} onPress={closeModal}>
               <Text style={{ color: "white" }}>Cerrar</Text>
             </Pressable>
-
           </View>
-
         </View>
       </View>
     </Modal>

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { Transaction, NewDataTransaction } from "../types/types";
 
 type propsCard = {
@@ -17,7 +17,7 @@ export function Card(props: propsCard) {
           <Text>{props.data.category}</Text>
           <Text>{props.data.amount}</Text>
         </View>
-        <View style={{flexDirection: "row", gap: 5}}>
+        <View style={{ flexDirection: "row", gap: 5 }}>
           <Pressable
             onPress={() => props.delete(props.data.id)}
             style={styles.boton}

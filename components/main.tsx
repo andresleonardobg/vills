@@ -5,19 +5,24 @@ import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Constants from "expo-constants";
-import { getData, removeData, storeTransactions } from "../database/db_controller";
+import {
+  getData,
+  removeData,
+  storeTransactions,
+} from "../database/db_controller";
 import { Transaction, NewDataTransaction } from "../types/types";
 import { Totals } from "./Totals";
 
 type TrasactionToUpdate = {
   id: number;
   transaction: Transaction;
-}
+};
 
 export function Main() {
   const [modalVisible, setModalVisible] = useState(false);
   const [records, setRecords] = useState<Transaction[]>([]);
-  const [transactionToUpdate, setTransactionToUpdate] = useState<TrasactionToUpdate | null>(null);
+  const [transactionToUpdate, setTransactionToUpdate] =
+    useState<TrasactionToUpdate | null>(null);
 
   // get data from localstorage
   useEffect(() => {
@@ -55,16 +60,19 @@ export function Main() {
     storeTransactions(oldRecords);
   };
 
-  const editRecord = (id: number ) => {
+  const editRecord = (id: number) => {
     const index = records.findIndex((item) => item.id === id);
-    const transaction = records[index]
-    const dataToUpdate: TrasactionToUpdate = {id: index, transaction: transaction}
+    const transaction = records[index];
+    const dataToUpdate: TrasactionToUpdate = {
+      id: index,
+      transaction: transaction,
+    };
     setTransactionToUpdate(dataToUpdate);
     setModalVisible(true);
-  }
+  };
 
   return (
-    <View style={{width: "100%", height: "100%"}}>
+    <View style={{ width: "100%", height: "100%" }}>
       <Totals input={100000} output={50000} />
       <View style={styles.container}>
         <ModalForm
@@ -77,8 +85,9 @@ export function Main() {
         <FlatList
           style={{ gap: 10, padding: 20 }}
           data={records}
-          // keyExtractor={}
-          renderItem={({ item }) => <Card data={item} delete={deleteRecord} edit={editRecord}/>}
+          renderItem={({ item }) => (
+            <Card data={item} delete={deleteRecord} edit={editRecord} />
+          )}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         />
       </View>
