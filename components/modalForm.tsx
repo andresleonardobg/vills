@@ -33,7 +33,7 @@ export function ModalForm(props: propsTransaction) {
   const [category, setCategory] = useState("");
   const [amoutMoney, setAmoutMoney] = useState("");
   const [type, setType] = useState("Gasto");
-  const [getId, setGetId] = useState(false);
+  const [getId, setGetId] = useState(true);
   const [id, setId] = useState(0);
 
   // get id
