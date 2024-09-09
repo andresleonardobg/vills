@@ -71,9 +71,23 @@ export function Main() {
     setModalVisible(true);
   };
 
+  const totalsInputs: number = records.reduce((previousValue, currentValue) => {
+    if (currentValue.type) {
+      return previousValue + currentValue.amount;
+    }
+    return previousValue;
+  }, 0);
+
+  const totalsOutputs: number = records.reduce((preValue, currentValue) => {
+    if (!currentValue.type) {
+      return preValue + currentValue.amount;
+    }
+    return preValue;
+  }, 0);
+
   return (
     <View style={{ width: "100%", height: "100%" }}>
-      <Totals input={100000} output={50000} />
+      <Totals input={totalsInputs} output={totalsOutputs} />
       <View style={styles.container}>
         <ModalForm
           modalVisible={modalVisible}
@@ -97,7 +111,6 @@ export function Main() {
       >
         <Ionicons name="add-circle" size={32} color="white" />
       </Pressable>
-
       <Pressable onPress={showAlert} style={styles.botonDelete}>
         <MaterialIcons name="delete" size={24} color="#ffffff" />
       </Pressable>
