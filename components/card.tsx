@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Transaction, NewDataTransaction } from "../types/types";
+import { Transaction } from "../types/types";
 
 type propsCard = {
   data: Transaction;

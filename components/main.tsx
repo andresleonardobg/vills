@@ -4,13 +4,12 @@ import { ModalForm } from "./modalForm";
 import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Constants from "expo-constants";
 import {
   getData,
   removeData,
   storeTransactions,
 } from "../database/db_controller";
-import { Transaction, NewDataTransaction } from "../types/types";
+import { Transaction } from "../types/types";
 import { Totals } from "./Totals";
 
 type TrasactionToUpdate = {
