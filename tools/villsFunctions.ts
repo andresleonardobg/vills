@@ -34,14 +34,14 @@ export class CurrentDate extends Date {
   }
 
   hour() {
-    return this.formatTimePart(this.getHours());
+    return Number(this.formatTimePart(this.getHours()));
   }
 
   minutes() {
-    return this.formatTimePart(this.getMinutes());
+    return Number(this.formatTimePart(this.getMinutes()));
   }
 
   seconds() {
-    return this.formatTimePart(this.getSeconds());
+    return Number(this.formatTimePart(this.getSeconds()));
   }
 }
