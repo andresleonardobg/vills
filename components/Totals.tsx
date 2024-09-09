@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Totals = {
   input: number;
@@ -9,9 +10,12 @@ export function Totals(props: Totals) {
   const balance = () => {
     return props.input - props.output;
   };
+
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={style.base}>
-      <View style={style.container}>
+      <View style={[style.container, { marginTop: insets.top }]}>
         {/* total inputs */}
         <View style={style.fields}>
           <Text style={style.baseText}>Ingresos: </Text>
@@ -34,7 +38,7 @@ export function Totals(props: Totals) {
 
 const style = StyleSheet.create({
   base: {
-    backgroundColor: "gray",
+    backgroundColor: "black",
     height: "20%",
     justifyContent: "center",
   },
@@ -43,8 +47,9 @@ const style = StyleSheet.create({
   },
   container: {
     backgroundColor: "rgba(255, 255, 255, 0.19)",
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
     padding: 20,
     borderRadius: 20,
     gap: 10,

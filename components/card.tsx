@@ -14,10 +14,15 @@ export function Card(props: propsCard) {
     <>
       <View style={props.data.type ? styles.input : styles.output}>
         <View>
-          <Text>{props.data.category}</Text>
-          <Text>{props.data.amount}</Text>
+          <Text style={styles.text}>{props.data.category}</Text>
+          <Text style={styles.text}>{props.data.amount}</Text>
         </View>
-        <View style={{ flexDirection: "row", gap: 5 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 5,
+          }}
+        >
           <Pressable
             onPress={() => props.delete(props.data.id)}
             style={styles.boton}
@@ -38,28 +43,33 @@ export function Card(props: propsCard) {
 
 const styles = StyleSheet.create({
   output: {
-    backgroundColor: "yellow",
-    padding: 20,
-    borderWidth: 5,
-    borderRadius: 20,
+    backgroundColor: "#444444",
+    padding: 10,
+    borderWidth: 3,
+    borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   input: {
-    backgroundColor: "green",
-    padding: 20,
-    borderWidth: 5,
-    borderRadius: 20,
+    backgroundColor: "#c0c0c0",
+    padding: 10,
+    borderWidth: 3,
+    borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   boton: {
     backgroundColor: "#000",
     borderRadius: 6,
     padding: 10,
-    width: 60,
-    right: 60,
+    width: 50,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
+  },
+  text: {
+    color: "white",
   },
 });

@@ -86,25 +86,25 @@ export function Main() {
   }, 0);
 
   return (
-    <View style={{ width: "100%", height: "100%" }}>
+    <>
+      <ModalForm
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        transactions={records}
+        setData={setRecords}
+        infoTransactionToUpdate={transactionToUpdate}
+      />
       <Totals input={totalsInputs} output={totalsOutputs} />
-      <View style={styles.container}>
-        <ModalForm
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          transactions={records}
-          setData={setRecords}
-          infoTransactionToUpdate={transactionToUpdate}
-        />
-        <FlatList
-          style={{ gap: 10, padding: 20 }}
-          data={records}
-          renderItem={({ item }) => (
-            <Card data={item} delete={deleteRecord} edit={editRecord} />
-          )}
-          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-        />
-      </View>
+      <FlatList
+        style={{ padding: 20, gap: 20 }}
+        data={records}
+        renderItem={({ item }) => (
+          <Card data={item} delete={deleteRecord} edit={editRecord} />
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        ListFooterComponent={<View style={{ height: 20 }} />}
+      />
+      <View style={{ height: 20 }} />
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
         style={styles.boton}
@@ -114,19 +114,14 @@ export function Main() {
       <Pressable onPress={showAlert} style={styles.botonDelete}>
         <MaterialIcons name="delete" size={24} color="#ffffff" />
       </Pressable>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    width: "100%",
-    height: "80%",
-  },
   boton: {
-    backgroundColor: "#000",
+    backgroundColor: "#737373",
+    borderWidth: 3,
     borderRadius: 6,
     padding: 10,
     position: "absolute",
@@ -138,7 +133,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   botonDelete: {
-    backgroundColor: "#000",
+    backgroundColor: "#737373",
+    borderWidth: 3,
     borderRadius: 6,
     padding: 10,
     position: "absolute",
