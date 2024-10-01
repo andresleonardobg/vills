@@ -1,9 +1,10 @@
 import * as FileSystem from "expo-file-system";
+import { Transaction } from "../types/types";
 const { StorageAccessFramework } = FileSystem;
 
 const localPathStorage = "/storage/emulated/0/Documents/ControlDeGastos/";
 
-export const saveJsonFile = async (data, nameFile) => {
+export const saveJsonFile = async (data: Transaction[], nameFile: string) => {
   try {
     const jsonContent = JSON.stringify(data);
     const fileUri = `${FileSystem.documentDirectory}${nameFile}.json`;
@@ -30,17 +31,17 @@ export const readJsonFile = async (file) => {
   }
 };
 
-export const saveFile = async (data) => {
+export const saveFile = async (data: Transaction[], nameFile: string) => {
   const permissions =
     await StorageAccessFramework.requestDirectoryPermissionsAsync();
 
   if (permissions.granted) {
     const directoryUri = permissions.directoryUri;
-    const info = data;
+    const info = JSON.stringify(data);
 
     await StorageAccessFramework.createFileAsync(
       directoryUri,
-      "filename",
+      nameFile,
       "application/json"
     )
       .then(async (fileUri) => {
