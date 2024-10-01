@@ -1,4 +1,5 @@
 import * as FileSystem from "expo-file-system";
+import * as DocumentPicker from "expo-document-picker";
 import { Transaction } from "../types/types";
 const { StorageAccessFramework } = FileSystem;
 
@@ -56,6 +57,18 @@ export const saveFile = async (data: Transaction[], nameFile: string) => {
       });
   } else {
     alert("Debes permitir el acceso para guardar.");
+  }
+};
+
+export const getDataFile = async () => {
+  let file = await DocumentPicker.getDocumentAsync();
+  if (file.assets !== null) {
+    const jsonContent = await FileSystem.readAsStringAsync(file.assets[0].uri);
+    const data = JSON.parse(jsonContent);
+    return data;
+  } else {
+    console.log("Error al importar el archivo");
+    return null;
   }
 };
 

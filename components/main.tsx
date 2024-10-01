@@ -4,6 +4,7 @@ import { ModalForm } from "./modalForm";
 import { Card } from "./card";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   getData,
   removeData,
@@ -11,7 +12,7 @@ import {
 } from "../database/db_controller";
 import { Transaction } from "../types/types";
 import { Totals } from "./Totals";
-import { saveFile } from "../database/storeFile";
+import { saveFile, getDataFile } from "../database/storeFile";
 
 type TrasactionToUpdate = {
   id: number;
@@ -35,6 +36,14 @@ export function Main() {
     };
     fetchData();
   }, []);
+
+  const getDataFileInfo = async () => {
+    const data = await getDataFile();
+    if (data !== null) {
+      setRecords(data);
+      storeTransactions(data);
+    }
+  };
 
   const showAlert = () => {
     Alert.alert("Info", "¿Borrar todas las bases de datos?", [
@@ -116,9 +125,12 @@ export function Main() {
       </Pressable>
       <Pressable
         onPress={() => saveFile(records, "records_test")}
-        style={styles.botonFile}
+        style={styles.botonSave}
       >
         <MaterialIcons name="file-download" size={32} color="black" />
+      </Pressable>
+      <Pressable onPress={getDataFileInfo} style={styles.botonImport}>
+        <MaterialCommunityIcons name="import" size={32} color="black" />
       </Pressable>
     </>
   );
@@ -164,7 +176,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#f00",
   },
-  botonFile: {
+  botonSave: {
     backgroundColor: "#737373",
     borderWidth: 3,
     borderRadius: 6,
@@ -173,6 +185,19 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     bottom: 250,
+    right: 60,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  botonImport: {
+    backgroundColor: "#737373",
+    borderWidth: 3,
+    borderRadius: 6,
+    padding: 10,
+    position: "absolute",
+    width: 60,
+    height: 60,
+    bottom: 350,
     right: 60,
     alignItems: "center",
     justifyContent: "center",
