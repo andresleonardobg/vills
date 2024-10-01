@@ -11,6 +11,7 @@ import {
 } from "../database/db_controller";
 import { Transaction } from "../types/types";
 import { Totals } from "./Totals";
+import { saveFile } from "../database/storeFile";
 
 type TrasactionToUpdate = {
   id: number;
@@ -113,6 +114,12 @@ export function Main() {
       <Pressable onPress={showAlert} style={styles.botonDelete}>
         <MaterialIcons name="delete" size={24} color="#ffffff" />
       </Pressable>
+      <Pressable
+        onPress={() => saveFile(records, "records_test")}
+        style={styles.botonFile}
+      >
+        <MaterialIcons name="file-download" size={32} color="black" />
+      </Pressable>
     </>
   );
 }
@@ -156,5 +163,18 @@ const styles = StyleSheet.create({
   debug: {
     borderWidth: 2,
     borderColor: "#f00",
+  },
+  botonFile: {
+    backgroundColor: "#737373",
+    borderWidth: 3,
+    borderRadius: 6,
+    padding: 10,
+    position: "absolute",
+    width: 60,
+    height: 60,
+    bottom: 250,
+    right: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
